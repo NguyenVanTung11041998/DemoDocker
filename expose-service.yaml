@@ -1,0 +1,15 @@
+# expose-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-app-expose
+  namespace: demoapp
+spec:
+  type: NodePort
+  selector:
+    app: demo-docker-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: http
+      nodePort: 31212
