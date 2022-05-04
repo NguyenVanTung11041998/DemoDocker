@@ -1,9 +1,11 @@
+using DockerDemo.EntityFrameworkCore;
 using Jaeger;
 using Jaeger.Reporters;
 using Jaeger.Samplers;
 using Jaeger.Senders.Thrift;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -58,6 +60,10 @@ namespace DockerDemo
                 options.OperationNameResolver =
                     request => $"{request.Method.Method}: {request?.RequestUri?.AbsoluteUri}");
 
+
+            string mySqlConnectionStr = Configuration.GetConnectionString("Default");
+
+            services.AddDbContextPool<DemoDockerDbContext>(options => options.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
