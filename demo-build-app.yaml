@@ -24,6 +24,8 @@ spec:
             value: http://0.0.0.0:80
           - name: JaegerIp
             value: "localhost"
+          - name: ConnectionStrings__Default
+            value: server=172.24.16.1;user=demo;password=1q2w3E4*;database=demo
           ports:
             - name: http
               containerPort: 80
@@ -40,7 +42,7 @@ spec:
             protocol: UDP
           command:
             - "/go/bin/agent-linux"
-            - "--reporter.grpc.host-port=172.22.16.1:14250"
+            - "--reporter.grpc.host-port=172.24.16.1:14250"
           resources:
             limits:
               memory: 50M
