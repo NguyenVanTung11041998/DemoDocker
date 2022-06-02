@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connect-app-service
+  namespace: demoapp
+spec:
+  selector:
+    matchLabels:
+      app: connect-app-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: connect-app-service
+    spec:
+      containers:
+        - name: connect-app-service
+          image: "connectapp:latest"
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:80
+          - name: ApiServer
+            value: http://demo-docker-service
+          ports:
+            - name: http
+              containerPort: 80
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: connect-app-service
+  namespace: demoapp
+spec:
+  type: NodePort
+  selector:
+    app: connect-app-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: http
+    nodePort: 31111

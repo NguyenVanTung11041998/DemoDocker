@@ -17,9 +17,10 @@ spec:
     storage: 200Gi
   accessModes:
     - ReadWriteMany
+  volumeMode: Filesystem
   nfs:
-    path: /smas/miniodata # đường dẫn data share
-    server: 192.168.1.63 # server NFS
+    path: /c/miniodata
+    server: 172.24.16.1
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -43,7 +44,7 @@ metadata:
   name: minio
   namespace: minio
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: minio
@@ -52,16 +53,17 @@ spec:
       labels:
         app: minio
     spec:
-      hostNetwork: true
       volumes:
       - name: storage
         persistentVolumeClaim:
           claimName: minio-pvc
       containers:
       - name: minio
-        image: minio/minio:RELEASE.2021-01-16T02-19-44Z.hotfix.f29f12b53
+        image: minio/minio
         args:
         - server
+        - --console-address
+        - :31606
         - /storage
         env:
         - name: MINIO_ACCESS_KEY

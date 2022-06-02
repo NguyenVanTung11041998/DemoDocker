@@ -8,7 +8,7 @@ namespace DockerDemo.Controllers
     public class HomeController : Controller
     {
         [HttpGet]
-        [Route("calculator")]
+        [Route("calculator/{x}/{y}")]
         public int Calculator(int x, int y)
         {
             Log.Information($"Result = {x} + {y} = {x + y}");

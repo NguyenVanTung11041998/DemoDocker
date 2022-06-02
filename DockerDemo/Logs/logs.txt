@@ -1,8 +1,0 @@
-2022-05-03 21:54:20.565 +07:00 [INF] Starting Host.
-2022-05-03 22:00:08.312 +07:00 [INF] Starting Host.
-6fbf9e84fe78ff52 2022-05-03 22:00:18.775 +07:00 [INF] 6fbf9e84fe78ff52  Result = 3 + 6 = 9
-2022-05-04 10:09:57.210 +07:00 [INF] Starting Host.
-2022-05-04 10:10:19.210 +07:00 [INF] Starting Host.
-2022-05-04 10:12:09.760 +07:00 [INF] Starting Host.
-2022-05-04 10:13:33.310 +07:00 [INF] Starting Host.
-2022-05-04 10:14:19.644 +07:00 [INF] Starting Host.
