@@ -2,41 +2,41 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: minio
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: minio-pv
-  namespace: minio
-  labels:
-    disk: pvc
-    app: minio
-spec:
-  storageClassName: minio-pv
-  capacity:
-    storage: 200Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    path: /c/miniodata
-    server: 172.24.16.1
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: minio-pvc
-  namespace: minio
-  labels:
-    disk: pvc
-    app: minio
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 200G
-  storageClassName: minio-pv
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+  # name: minio-pv
+  # namespace: minio
+  # labels:
+    # disk: pvc
+    # app: minio
+# spec:
+  # storageClassName: minio-pv
+  # capacity:
+    # storage: 200Gi
+  # accessModes:
+    # - ReadWriteMany
+  # volumeMode: Filesystem
+  # nfs:
+    # path: /c/miniodata
+    # server: 172.24.16.1
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+  # name: minio-pvc
+  # namespace: minio
+  # labels:
+    # disk: pvc
+    # app: minio
+# spec:
+  # accessModes:
+    # - ReadWriteMany
+  # resources:
+    # requests:
+      # storage: 200G
+  # storageClassName: minio-pv
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,17 +54,20 @@ spec:
         app: minio
     spec:
       volumes:
-      - name: storage
-        persistentVolumeClaim:
-          claimName: minio-pvc
+      # - name: storage
+        # persistentVolumeClaim:
+          # claimName: minio-pvc
+        - name: "storage"
+          hostPath:
+            path: "/run/desktop/mnt/host/c/Users/hanv/Desktop/data"
       containers:
       - name: minio
-        image: minio/minio
+        image: minio/minio:edge
         args:
         - server
         - --console-address
         - :31606
-        - /storage
+        - /data
         env:
         - name: MINIO_ACCESS_KEY
           value: "admin"
@@ -74,7 +77,7 @@ spec:
         - containerPort: 9000
         volumeMounts:
         - name: storage
-          mountPath: "/storage"
+          mountPath: "/data"
 ---
 apiVersion: v1
 kind: Service

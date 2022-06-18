@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-minio
+  labels:
+    name: nginx-minio
+spec:
+  rules:
+    - http:
+        paths:
+        - pathType: Prefix
+          path: /(minio/.*)
+          backend:
+            service:
+              name: minio-svc
+              port: 
+                number: 9000
