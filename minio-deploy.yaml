@@ -2,41 +2,43 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: minio
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-  # name: minio-pv
-  # namespace: minio
-  # labels:
-    # disk: pvc
-    # app: minio
-# spec:
-  # storageClassName: minio-pv
-  # capacity:
-    # storage: 200Gi
-  # accessModes:
-    # - ReadWriteMany
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio-pv
+  namespace: minio
+  labels:
+    disk: pvc
+    app: minio
+spec:
+  storageClassName: minio-pv
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/c/miniodata"
   # volumeMode: Filesystem
   # nfs:
-    # path: /c/miniodata
-    # server: 172.24.16.1
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-  # name: minio-pvc
-  # namespace: minio
-  # labels:
-    # disk: pvc
-    # app: minio
-# spec:
-  # accessModes:
-    # - ReadWriteMany
-  # resources:
-    # requests:
-      # storage: 200G
-  # storageClassName: minio-pv
+  #   path: /c/miniodata
+  #   server: 172.24.16.1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc
+  namespace: minio
+  labels:
+    disk: pvc
+    app: minio
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2G
+  storageClassName: minio-pv
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,27 +56,28 @@ spec:
         app: minio
     spec:
       volumes:
-      # - name: storage
-        # persistentVolumeClaim:
-          # claimName: minio-pvc
-        - name: "storage"
-          hostPath:
-            path: "/run/desktop/mnt/host/c/Users/hanv/Desktop/data"
+      - name: storage
+        persistentVolumeClaim:
+          claimName: minio-pvc
+        # - name: "storage"
+        #   hostPath:
+        #     path: "/run/desktop/mnt/host/c/Users/hanv/Desktop/data"
       containers:
       - name: minio
         image: minio/minio:edge
         args:
         - server
         - --console-address
-        - :31606
+        - :9001
         - /data
         env:
-        - name: MINIO_ACCESS_KEY
+        - name: MINIO_ROOT_USER
           value: "admin"
-        - name: MINIO_SECRET_KEY
+        - name: MINIO_ROOT_PASSWORD
           value: "Smas#2020"
         ports:
         - containerPort: 9000
+        - containerPort: 9001
         volumeMounts:
         - name: storage
           mountPath: "/data"
@@ -87,9 +90,15 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 9000
+    - name: server-port
+      port: 9000
       targetPort: 9000
       protocol: TCP
       nodePort: 31606
+    - name: console-port
+      port: 9001
+      targetPort: 9001
+      protocol: TCP
+      nodePort: 31607
   selector:
     app: minio
