@@ -63,6 +63,10 @@ namespace DockerDemo
             string mySqlConnectionStr = Configuration.GetConnectionString("Default");
 
             services.AddDbContextPool<DemoDockerDbContext>(options => options.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr)));
+
+            MongoDbConst.MongoDbConnectionString = Configuration["MongoDbConfig:MongoDb"];
+            MongoDbConst.DatabaseName = Configuration["MongoDbConfig:DatabaseName"];
+            MongoDbConst.CollectionName = Configuration["MongoDbConfig:CollectionName"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

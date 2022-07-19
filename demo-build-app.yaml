@@ -26,6 +26,8 @@ spec:
             value: "localhost"
           - name: ConnectionStrings__Default
             value: server=172.24.16.1;user=demo;password=1q2w3E4*;database=demo
+          - name: MongoDbConfig__MongoDb
+            value: mongodb://admin:admin@mongo-service:27017
           ports:
             - name: http
               containerPort: 80
