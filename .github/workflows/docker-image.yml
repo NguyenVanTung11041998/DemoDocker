@@ -18,6 +18,9 @@ jobs:
       with:
         username: tungktpm1
         password: dckr_pat_GcKzA2oPoKi_3dfIFmR6DTfgUkM
+      #uses: actions/checkout@v3
+    - name: Copy project
+      run: copy . .
     - name: Build the Docker image ConnectApp
       run: docker build -t tungktpm1/connect-app:latest -f ConnectApp/Dockerfile .
     - name: Publish ConnectApp
