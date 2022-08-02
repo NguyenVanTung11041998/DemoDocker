@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image ConnectApp
+      run: docker build -t tungktpm1/connect-app:latest -f ConnectApp/Dockerfile .
+    - name: Publish ConnectApp
+      run: docker push tungktpm1/connect-app:latest
+    - name: Build the Docker image DockerDemo
+      run: docker build -t tungktpm1/docker-demo:latest -f DockerDemo/Dockerfile .
+    - name: Publish DockerDemo
+      run: docker push tungktpm1/docker-demo:latest
