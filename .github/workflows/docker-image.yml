@@ -14,6 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Login Dockerhub
+      run: docker login
     - name: Build the Docker image ConnectApp
       run: docker build -t tungktpm1/connect-app:latest -f ConnectApp/Dockerfile .
     - name: Publish ConnectApp
