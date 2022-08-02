@@ -14,10 +14,10 @@ jobs:
 
     steps:
     - name: Login DockerHub
-      uses: actions/checkout@v3
+      uses: docker/login-action@v2
       with:
         username: tungktpm1
-        password: dckr_pat_GcKzA2oPoKi_3dfIFmR6DTfgUkM
+        password: 1234567890Vtdckr_pat_GcKzA2oPoKi_3dfIFmR6DTfgUkM
     - name: Build the Docker image ConnectApp
       run: docker build -t tungktpm1/connect-app:latest -f ConnectApp/Dockerfile .
     - name: Publish ConnectApp
