@@ -16,8 +16,8 @@ jobs:
     - name: Login DockerHub
       uses: docker/login-action@v2
       with:
-        username: tungktpm1
-        password: dckr_pat_GcKzA2oPoKi_3dfIFmR6DTfgUkM
+        username: ${{ secrets.UserName }}
+        password: ${{ secrets.Token }}
     - name: Checkout
       uses: actions/checkout@v3
     - name: Build the Docker image ConnectApp
