@@ -1,0 +1,50 @@
+pipeline {
+
+  environment {
+    dockerimagename = "tungktpm1/DockerDemo"
+    dockerImage = ""
+	dockerfile = "DockerDemo/Dockerfile"
+  }
+
+  agent any
+
+  stages {
+
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/NguyenVanTung11041998/DemoDocker.git'
+      }
+    }
+
+    stage('Build image') {
+      steps{
+        script {
+          sh 'docker build -t tungktpm1/DockerDemo:latest -f DockerDemo/Dockerfile .'
+        }
+      }
+    }
+
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhublogin'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
+
+    stage('Deploying App to Kubernetes') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "demo-build-app.yaml", kubeconfigId: "kubernetes")
+        }
+      }
+    }
+
+  }
+
+}
