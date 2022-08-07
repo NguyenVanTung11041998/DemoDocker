@@ -1,9 +1,13 @@
 pipeline {
 
   environment {
-    dockerimagename = "tungktpm1/DockerDemo"
-    dockerImage = ""
-	dockerfile = "DockerDemo/Dockerfile"
+    dockerImageDockerDemoName = "tungktpm1/docker-demo"
+    dockerImageConnectAppName = "tungktpm1/connect-app"
+    dockerfileDockerDemo = "DockerDemo/Dockerfile"
+    dockerfileConnectApp = "ConnectApp/Dockerfile"
+    dockerImageDockerDemo = ""
+    dockerImageConnectApp = ""
+    dockerTag = "latest"
   }
 
   agent any
@@ -19,19 +23,32 @@ pipeline {
     stage('Build image') {
       steps{
         script {
-          sh 'docker build -t tungktpm1/DockerDemo:latest -f DockerDemo/Dockerfile .'
+          dockerImageDockerDemo = docker.build("${dockerImageDockerDemoName}:${dockerTag}", "-f ${dockerfileDockerDemo} .")
+          
+          dockerImageConnectApp = docker.build("${dockerImageConnectAppName}:${dockerTag}", "-f ${dockerImageConnectAppName} .")
+        }
+      }
+    }
+
+    stage('Logout Docker Hub') {
+      steps{
+        script {
+          sh 'docker logout'
         }
       }
     }
 
     stage('Pushing Image') {
       environment {
-               registryCredential = 'dockerhublogin'
-           }
+        registryCredential = 'dockerhublogin'
+      }
+      
       steps{
         script {
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
+            dockerImageDockerDemo.push()
+
+            dockerImageConnectApp.push()
           }
         }
       }
@@ -41,10 +58,10 @@ pipeline {
       steps {
         script {
           kubernetesDeploy(configs: "demo-build-app.yaml", kubeconfigId: "kubernetes")
+          
+          kubernetesDeploy(configs: "expose-app-connect.yaml", kubeconfigId: "kubernetes")
         }
       }
     }
-
   }
-
 }
