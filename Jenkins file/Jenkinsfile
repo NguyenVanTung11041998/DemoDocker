@@ -25,7 +25,7 @@ pipeline {
         script {
           dockerImageDockerDemo = docker.build("${dockerImageDockerDemoName}:${dockerTag}", "-f ${dockerfileDockerDemo} .")
           
-          dockerImageConnectApp = docker.build("${dockerImageConnectAppName}:${dockerTag}", "-f ${dockerImageConnectAppName} .")
+          dockerImageConnectApp = docker.build("${dockerImageConnectAppName}:${dockerTag}", "-f ${dockerfileConnectApp} .")
         }
       }
     }
@@ -42,7 +42,7 @@ pipeline {
       environment {
         registryCredential = 'dockerhublogin'
       }
-      
+
       steps{
         script {
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
