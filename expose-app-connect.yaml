@@ -32,8 +32,6 @@ spec:
           ports:
             - name: http
               containerPort: 80
-      imagePullSecrets:
-        - name: regcred
 ---
 kind: Service
 apiVersion: v1
@@ -49,15 +47,3 @@ spec:
     port: 80
     targetPort: http
     nodePort: 31111
----
-apiVersion: v1
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL3JlZ2lzdHJ5Lmh1Yi5kb2NrZXIuY29tIjp7InVzZXJuYW1lIjoidHVuZ2t0cG0xIiwicGFzc3dvcmQiOiIxMjM0NTY3ODkwVnQiLCJlbWFpbCI6InR1bmdrdHBtMUBnbWFpbC5jb20iLCJhdXRoIjoiZEhWdVoydDBjRzB4T2pFeU16UTFOamM0T1RCV2RBPT0ifX19
-kind: Secret
-metadata:
-  creationTimestamp: "2022-08-07T14:20:34Z"
-  name: regcred
-  namespace: default
-  resourceVersion: "54706"
-  uid: 6eb537ed-4a05-4511-97b5-3bba8046c24c
-type: kubernetes.io/dockerconfigjson
