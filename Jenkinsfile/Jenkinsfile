@@ -33,7 +33,7 @@ pipeline {
     stage('Logout Docker Hub') {
       steps{
         script {
-          sh 'docker logout'
+          bat 'docker logout'
         }
       }
     }
