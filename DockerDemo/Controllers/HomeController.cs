@@ -20,6 +20,13 @@ namespace DockerDemo.Controllers
             return x + y;
         }
 
+        [HttpGet]
+        [Route("test/{x}")]
+        public string Test(string x)
+        {
+            return $"Hello {x}";
+        }
+
         [HttpPost]
         [Route("add")]
         public async Task AddEntityAsync(Product product)
