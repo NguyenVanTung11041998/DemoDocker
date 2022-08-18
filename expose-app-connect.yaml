@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: connect-app-service
-          image: "tungktpm1/connect-app:latest"
+          image: "tungktpm1/connect-app:app"
           imagePullPolicy: Always
           env:
           - name: ASPNETCORE_ENVIRONMENT

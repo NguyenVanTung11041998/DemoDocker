@@ -7,7 +7,7 @@ pipeline {
     dockerfileConnectApp = "ConnectApp/Dockerfile"
     dockerImageDockerDemo = ""
     dockerImageConnectApp = ""
-    dockerTag = "latest"
+    dockerTag = "app"
   }
 
   agent any
@@ -60,6 +60,8 @@ pipeline {
           kubernetesDeploy(configs: "demo-build-app.yaml", kubeconfigId: "kubernetes")
           
           kubernetesDeploy(configs: "expose-app-connect.yaml", kubeconfigId: "kubernetes")
+          
+          kubernetesDeploy(configs: "auto-scale-app.yaml", kubeconfigId: "kubernetes")
         }
       }
     }

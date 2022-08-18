@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: demo-docker-service
-          image: "tungktpm1/docker-demo:latest"
+          image: "tungktpm1/docker-demo:app"
           imagePullPolicy: Always
           env:
           - name: ASPNETCORE_ENVIRONMENT
