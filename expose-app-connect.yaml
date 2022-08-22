@@ -29,6 +29,8 @@ spec:
             value: http://0.0.0.0:80
           - name: ApiServer
             value: http://demo-docker-service
+          - name: ConnectionStrings__Default
+            value: server=localhost;user=root;password=NTQ@123456;database=demo
           ports:
             - name: http
               containerPort: 80
