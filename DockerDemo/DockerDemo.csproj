@@ -6,10 +6,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Logs\**" />
-	  <Content Remove="Logs\**" />
-	  <EmbeddedResource Remove="Logs\**" />
-	  <None Remove="Logs\**" />
+		<Compile Remove="Logs\**" />
+		<Content Remove="Logs\**" />
+		<EmbeddedResource Remove="Logs\**" />
+		<None Remove="Logs\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -17,8 +17,8 @@
 		<PackageReference Include="Jaeger.Senders.Thrift" Version="1.0.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.16" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.16">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
 		<PackageReference Include="MongoDB.Bson" Version="2.17.0" />
@@ -32,9 +32,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="Views\Index.cshtml">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
+		<Content Update="Views\Index.cshtml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
 	</ItemGroup>
 
 </Project>
