@@ -1,10 +1,13 @@
 using DockerDemo.EntityFrameworkCore;
+using DockerDemo.Helpers;
+using DockerDemo.Services;
 using Jaeger;
 using Jaeger.Reporters;
 using Jaeger.Samplers;
 using Jaeger.Senders.Thrift;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,6 +67,12 @@ namespace DockerDemo
 
             services.AddDbContextPool<DemoDockerDbContext>(options => options.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr)));
 
+            services.AddScoped<ITemplateAppService, RazorViewsTemplateAppService>();
+            
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.AddMvc();
+
             MongoDbConst.MongoDbConnectionString = Configuration["MongoDbConfig:MongoDb"];
             MongoDbConst.DatabaseName = Configuration["MongoDbConfig:DatabaseName"];
             MongoDbConst.CollectionName = Configuration["MongoDbConfig:CollectionName"];
@@ -89,10 +98,14 @@ namespace DockerDemo
 
             app.UseAuthorization();
 
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            env.PreparePuppeteerAsync().GetAwaiter().GetResult();
         }
     }
 }
